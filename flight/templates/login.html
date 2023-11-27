@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+
+{% endblock %}
+{% block body %}
+<main class="main">
+
+    <!-- breadcrumb -->
+    <div class="site-breadcrumb" style="background: url({% static 'assets/img/breadcrumb/02.jpg' %})">
+    </div>
+    <script>
+        // Check if the error_message is not empty
+        {% if error_message %}
+        // Display SweetAlert when the page is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '{{ error_message }}',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK',
+                timer: 3000,
+                timerProgressBar: true
+            });
+        });
+        {% endif %}
+    </script>
+    <!-- login area -->
+    <div id="scroll" class="login-area py-120">
+            <div class="col-md-5 mx-auto">
+                <div class="container">
+                <div class="login-form">
+                    <div class="login-header">
+                        <img src="{% static 'assets/img/logo/sliderlogofinal.png' %}" alt="">
+                        <p>Login with your account</p>
+                    </div>
+                    <form method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.GET.next }}">
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <div class="form-group-icon">
+                                <input name="email" type="email" class="form-control" placeholder="Your Email">
+                                <i class="far fa-envelope"></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <div class="form-group-icon">
+                                <input name="password" type="password" class="form-control" placeholder="Your Password">
+                                <i class="far fa-lock"></i>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="remember">
+                                <label class="form-check-label" for="remember">
+                                    Remember Me
+                                </label>
+                            </div>
+                            <a href="{% url 'Forgot_Password' %}" class="forgot-pass">Forgot Password?</a>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <button type="submit" class="theme-btn"><i class="far fa-sign-in"></i> Login</button>
+                        </div>
+                    </form>
+                    <div class="login-footer">
+                        <div class="login-divider"><span>Or</span></div>
+                        <div class="social-login">
+                            <a href="#" class="btn-fb"><i class="fab fa-facebook"></i> Login With Facebook</a>
+                            <a href="#" class="btn-gl"><i class="fab fa-google"></i> Login With Google</a>
+                        </div>
+                        <p>Don't have an account? <a href="{% url 'register' %}">Sign Up.</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- login area end -->
+
+
+</main>
+{% block js %}
+<script>
+    // Add JavaScript code to scroll to the desired section on page load
+    window.addEventListener('DOMContentLoaded', function () {
+        const containerSection = document.querySelector('#scroll');
+        if (containerSection) {
+            containerSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+{% endblock %}
+
+{% endblock %}

@@ -1,0 +1,1764 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<style>  
+    #loader-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7); /* Semi-transparent gray background */
+        z-index: 1000; /* Ensure it's above other content */
+    }
+    .width {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    #paxdet {
+        display: block;
+    }
+    #removeButton{
+        color: red;
+    }
+    
+</style>
+{% endblock %}
+{% block body %}
+<main class="main">
+
+    
+    <div id="loader-container">
+        <div class="loader width">
+            <span style="--i:1;"></span>
+            <span style="--i:2;"></span>
+            <span style="--i:3;"></span>
+            <span style="--i:4;"></span>
+            <span style="--i:5;"></span>
+            <span style="--i:6;"></span>
+            <span style="--i:7;"></span>
+            <span style="--i:8;"></span>
+            <span style="--i:9;"></span>
+            <span style="--i:10;"></span>
+            <span style="--i:11;"></span>
+            <span style="--i:12;"></span>
+            <span style="--i:13;"></span>
+            <span style="--i:14;"></span>
+            <span style="--i:15;"></span>
+            <span style="--i:16;"></span>
+            <span style="--i:17;"></span>
+            <span style="--i:18;"></span>
+            <span style="--i:19;"></span>
+            <span style="--i:20;"></span>
+            <div class="loader-plane"></div>
+        </div>
+    </div>
+    <!-- breadcrumb -->
+    <div class="site-breadcrumb" style="background: url('https://i.ibb.co/ZX8VPCz/airplane.jpg')">
+    </div>
+
+
+
+        {% if TripType == "O" %}
+        <form action="{% url 'flight_booking' %}" method="post" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <input type="hidden" id="jsonData" name="jsonData" value="[]">
+            <input type="hidden" id="jsonDataBaggage" name="jsonDataBaggage" value="[]">
+            <input type="hidden" id="jsonDataMeal" name="jsonDataMeal" value="[]">
+            <input type="hidden" name="AdultCount" value="{{AdultCount}}">
+            <input type="hidden" name="ChildCount" value="{{ChildCount}}">
+            <input type="hidden" name="InfantCount" value="{{InfantCount}}">
+            <input type="hidden" name="Token" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Token}}">
+            <input type="hidden" name="TrackId" value="{{pricing_details.PriceItenaryInfo.0.Trackid}}">
+            <input type="hidden" name="Stops" value="{{Stops}}">
+
+            <input type="hidden" name="FlightID" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.FlightID}}">
+            <input type="hidden" name="FlightNumber" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.FlightNumber}}">
+            <input type="hidden" name="Origin" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.Origin}}">
+            <input type="hidden" name="Destination" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.Destination}}">
+            <input type="hidden" name="DepartureDateTime" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.DepartureDateTime}}">
+            <input type="hidden" name="ArrivalDateTime" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.ArrivalDateTime}}">
+            <input type="hidden" name="TotalAmount" id="TotalAmount" value="{{Total_price}}">
+            <input type="hidden" name="TripType" value="{{TripType}}">
+
+            {% comment %} stop1 {% endcomment %}
+            <input type="hidden" name="FlightID1" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.FlightID}}">
+            <input type="hidden" name="FlightNumber1" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.FlightNumber}}">
+            <input type="hidden" name="Origin1" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.Origin}}">
+            <input type="hidden" name="Destination1" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.Destination}}">
+            <input type="hidden" name="DepartureDateTime1" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.DepartureDateTime}}">
+            <input type="hidden" name="ArrivalDateTime1" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.ArrivalDateTime}}">
+
+            <!-- Return Flight details-->
+            <input type="hidden" name="RToken" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Token}}">
+            <input type="hidden" name="RFlightID" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.0.FlightID}}">
+            <input type="hidden" name="RStops" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.0.Stops}}">
+            <input type="hidden" name="RFlightNumber" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.0.FlightNumber}}">
+            <input type="hidden" name="ROrigin" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.0.Origin}}">
+            <input type="hidden" name="RDestination" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.0.Destination}}">
+            <input type="hidden" name="RDepartureDateTime" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.0.DepartureDateTime}}">
+            <input type="hidden" name="RArrivalDateTime" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.0.ArrivalDateTime}}">
+            <input type="hidden" name="One_way_Total_price" value="{{One_way_Total_price}}">
+            <input type="hidden" name="retun_Total_price" value="{{retun_Total_price}}">
+    
+
+            {% comment %} stop1 {% endcomment %}
+            <input type="hidden" name="RFlightID1" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.1.FlightID}}">
+            <input type="hidden" name="RFlightNumber1" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.1.FlightNumber}}">
+            <input type="hidden" name="ROrigin1" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.1.Origin}}">
+            <input type="hidden" name="RDestination1" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.1.Destination}}">
+            <input type="hidden" name="RDepartureDateTime1" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.1.DepartureDateTime}}">
+            <input type="hidden" name="RArrivalDateTime1" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.1.ArrivalDateTime}}">
+
+
+            <input type="hidden" name="list" value="adult1">
+            <input type="hidden" name="list" value="adult2">
+            <input type="hidden" name="list" value="adult3">
+            <input type="hidden" name="list" value="adult4">
+            <div class="hotel-single py-120">
+                <div class="container">
+                    <div class="listing-wrapper">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="listing-content">
+
+                                    <div class="listing-item listing-flight">
+                                        <div class="flight-booking-time">
+                                            <div class="start-time">
+                                                <div class="start-time-icon">
+                                                    <i class="fal fa-plane-departure"></i>
+                                                </div>
+                                                <div class="start-time-info">
+                                                    <h6 class="start-time-text">Flight Take Off</h6>
+                                                    <p class="flight-full-date">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.DepartureDateTime}}
+                                                    </p>
+                                                    <span class="flight-destination">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.Origin}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="flight-stop">
+                                                <span class="flight-stop-number">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.Stops}} Stop (STN)</span>
+                                                <div class="flight-stop-arrow flight-has-stop"></div>
+                                                <div class="flight-booking-duration">
+                                                    <span class="duration-text">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.JourneyTime}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="end-time">
+                                                <div class="start-time-icon">
+                                                    <i class="fal fa-plane-arrival"></i>
+                                                </div>
+                                                <div class="start-time-info">
+                                                    <h6 class="end-time-text">Flight Landing</h6>
+                                                    <p class="flight-full-date">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.ArrivalDateTime}}</p>
+                                                    <span class="flight-destination">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.Destination}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% if Stops == "1" %}
+                                    <div class="listing-item listing-flight">
+                                        <div class="flight-booking-time">
+                                            <div class="start-time">
+                                                <div class="start-time-icon">
+                                                    <i class="fal fa-plane-departure"></i>
+                                                </div>
+                                                <div class="start-time-info">
+                                                    <h6 class="start-time-text">Flight Take Off</h6>
+                                                    <p class="flight-full-date">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.DepartureDateTime}}
+                                                    </p>
+                                                    <span class="flight-destination">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.Origin}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="flight-stop">
+                                                <span class="flight-stop-number">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.Stops}} Stop (STN)</span>
+                                                <div class="flight-stop-arrow flight-has-stop"></div>
+                                                <div class="flight-booking-duration">
+                                                    <span class="duration-text">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.JourneyTime}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="end-time">
+                                                <div class="start-time-icon">
+                                                    <i class="fal fa-plane-arrival"></i>
+                                                </div>
+                                                <div class="start-time-info">
+                                                    <h6 class="end-time-text">Flight Landing</h6>
+                                                    <p class="flight-full-date">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.ArrivalDateTime}}</p>
+                                                    <span class="flight-destination">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.Destination}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+
+                             
+
+
+
+
+
+                                    
+                                    <div class="listing-baggage">
+                                        <div class="listing-baggage-check">
+                                            <div class="row">
+                                                <h4 class="mb-3">Add-ons</h4>
+
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        
+                                                              <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                Add Baggage
+                                            </button>
+                                    
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Baggage</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <select class="select" id="baggagerefno">
+                                                    <option value="">Ref To</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                </select>
+                                                <select class="select" id="baggageid">
+                                                    <option value="">Add Extra Baggage</option>
+                                                    {% for bagg_item in pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Bagg %}
+                                                    <option value="{{ bagg_item.BaggageID }}">{{ bagg_item.Description|slice:"-4:" }} - ₹{{ bagg_item.Amount }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <div id="addedDetails"></div>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Save</button>
+                                            <button type="button" id="addbagg" class="btn btn-primary">Add</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                                        
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                {% comment %} meal {% endcomment %}
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <!-- Button trigger modal -->
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mealModal">
+                                                            Add Meal
+                                                        </button>
+                                     
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="mealModal" tabindex="-1" aria-labelledby="mealModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="mealModalLabel">Meal</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <select class="select" id="mealrefno">
+                                                                            <option value="">Ref To</option>
+                                                                            <option value="1">1</option>
+                                                                            <option value="2">2</option>
+                                                                            <option value="3">3</option>
+                                                                            <option value="4">4</option>
+                                                                            <option value="5">5</option>
+                                                                            <option value="6">6</option>
+                                                                            <option value="7">7</option>
+                                                                            <option value="8">8</option>
+                                                                            <option value="9">9</option>
+                                                                        </select>
+                                                                        <select class="select" name="meal" id="mealid">
+                                                                            <option value="">Add Extra Meal</option>
+                                                                            {% for meal_item in pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Meal %}
+                                                                            <option value="{{ meal_item.MealID }}">{{ meal_item.Description }} - ₹{{ meal_item.Amount }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                        <div id="addedMealDetails"></div>
+                                                                    </div>
+                                                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Save</button>
+                                                                        <button type="button" id="addMeal" class="btn btn-primary">Add</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                    
+                                                </div>
+
+
+
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label>SeatMap</label>
+                                                        <div class="form-group-icon">
+                                                            <select class="select">
+                                                                <option value="">Select Class</option>
+                                                            </select>
+                                                            <i class="far fa-user-tie"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>                                  
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+
+                                </div>                                
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="booking-sidebar listing-side-content">
+                                    <div class="booking-item">
+                                        <div class="listing-price">
+                                            <div class="listing-price-amount">
+                                                Total:- <span> ₹ {{Total_price}}</span>
+                                            </div>
+                                            <span type="button" data-toggle="modal"
+                                            data-target="#exampleModalLong">
+                                            <span class="#">Fare Rules</span>&nbsp;&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                              </svg>
+                                            </span>
+                                            <div class="listing-side-btn">
+                                            </div>
+
+
+                                            {% comment %} modal {% endcomment %}
+                                             <!-- Modal -->
+                                        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Fare
+                                                        Rules</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+    
+                                                    <pre>{{Fare_Rule|safe}}</pre>
+    
+    
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Close</button>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                            {% comment %} modalend {% endcomment %}
+                                            
+
+                                        </div>
+                                        
+                                        <div class="search-form">
+
+                                            <div class="tour-search-wrapper">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-xl-12">
+
+
+
+
+
+                                                        <table class="table table-borderless">
+                                                            <tr>
+                                                                <th>Passengers</th>
+                                                                <th>Gross Fare</th>
+                                                          
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Adult</td>
+                                                                <td>₹{{adultP}}</td>
+                                                          
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Child</td>
+                                                                <td>₹{{childP}}</td>
+                                                       
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Infant</td>
+                                                                <td>₹{{infantP}}</td>
+                                                              
+                                                            </tr>
+
+                                                        </table>
+
+
+
+
+
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="listing-side-btn">
+                                                    <button id="submit-button" type="submit" class="theme-btn">Confirm Booking</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form> 
+        {% endif %}
+
+        {% if TripType == "R" %}
+        <form action="{% url 'Rflight_booking' %}" method="post" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <input type="hidden" id="jsonData" name="jsonData" value="[]">
+            <input type="hidden" id="jsonDataBaggage" name="jsonDataBaggage" value="[]">
+            <input type="hidden" id="jsonDataMeal" name="jsonDataMeal" value="[]">
+            <input type="hidden" name="AdultCount" value="{{AdultCount}}">
+            <input type="hidden" name="ChildCount" value="{{ChildCount}}">
+            <input type="hidden" name="InfantCount" value="{{InfantCount}}">
+            <input type="hidden" name="Token" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Token}}">
+            <input type="hidden" name="TrackId" value="{{pricing_details.PriceItenaryInfo.0.Trackid}}">
+            <input type="hidden" name="Stops" value="{{Stops}}">
+
+            <input type="hidden" name="FlightID" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.FlightID}}">
+            <input type="hidden" name="FlightNumber" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.FlightNumber}}">
+            <input type="hidden" name="Origin" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.Origin}}">
+            <input type="hidden" name="Destination" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.Destination}}">
+            <input type="hidden" name="DepartureDateTime" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.DepartureDateTime}}">
+            <input type="hidden" name="ArrivalDateTime" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.ArrivalDateTime}}">
+            <input type="hidden" name="TotalAmount" value="{{Total_price}}">
+            <input type="hidden" name="TripType" value="{{TripType}}">
+
+            {% comment %} stop1 {% endcomment %}
+            <input type="hidden" name="FlightID1" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.FlightID}}">
+            <input type="hidden" name="FlightNumber1" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.FlightNumber}}">
+            <input type="hidden" name="Origin1" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.Origin}}">
+            <input type="hidden" name="Destination1" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.Destination}}">
+            <input type="hidden" name="DepartureDateTime1" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.DepartureDateTime}}">
+            <input type="hidden" name="ArrivalDateTime1" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.ArrivalDateTime}}">
+
+            <!-- Return Flight details-->
+            <input type="hidden" name="RToken" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Token}}">
+            <input type="hidden" name="RFlightID" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.0.FlightID}}">
+            <input type="hidden" name="RStops" value="{{RStops}}">
+            <input type="hidden" name="RFlightNumber" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.0.FlightNumber}}">
+            <input type="hidden" name="ROrigin" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.0.Origin}}">
+            <input type="hidden" name="RDestination" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.0.Destination}}">
+            <input type="hidden" name="RDepartureDateTime" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.0.DepartureDateTime}}">
+            <input type="hidden" name="RArrivalDateTime" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.0.ArrivalDateTime}}">
+            <input type="hidden" id="TotalAmount" name="One_way_Total_price" value="{{One_way_Total_price}}">
+            <input type="hidden" id="RTotalAmount" name="retun_Total_price" value="{{retun_Total_price}}">
+    
+
+            {% comment %} stop1 {% endcomment %}
+            <input type="hidden" name="RFlightID1" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.1.FlightID}}">
+            <input type="hidden" name="RFlightNumber1" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.1.FlightNumber}}">
+            <input type="hidden" name="ROrigin1" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.1.Origin}}">
+            <input type="hidden" name="RDestination1" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.1.Destination}}">
+            <input type="hidden" name="RDepartureDateTime1" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.1.DepartureDateTime}}">
+            <input type="hidden" name="RArrivalDateTime1" value="{{pricing_details.PriceItenaryInfo.1.AvailabilityResponse.0.Flights.1.ArrivalDateTime}}">
+
+
+            <input type="hidden" name="list" value="adult1">
+            <input type="hidden" name="list" value="adult2">
+            <input type="hidden" name="list" value="adult3">
+            <input type="hidden" name="list" value="adult4">
+            <div class="hotel-single py-120">
+                <div class="container">
+                    <div class="listing-wrapper">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="listing-content">
+
+                                    <div class="listing-item listing-flight">
+                                        <div class="flight-booking-time">
+                                            <div class="start-time">
+                                                <div class="start-time-icon">
+                                                    <i class="fal fa-plane-departure"></i>
+                                                </div>
+                                                <div class="start-time-info">
+                                                    <h6 class="start-time-text">Flight Take Off</h6>
+                                                    <p class="flight-full-date">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.DepartureDateTime}}
+                                                    </p>
+                                                    <span class="flight-destination">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.Origin}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="flight-stop">
+                                                <span class="flight-stop-number">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.Stops}} Stop (STN)</span>
+                                                <div class="flight-stop-arrow flight-has-stop"></div>
+                                                <div class="flight-booking-duration">
+                                                    <span class="duration-text">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.JourneyTime}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="end-time">
+                                                <div class="start-time-icon">
+                                                    <i class="fal fa-plane-arrival"></i>
+                                                </div>
+                                                <div class="start-time-info">
+                                                    <h6 class="end-time-text">Flight Landing</h6>
+                                                    <p class="flight-full-date">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.ArrivalDateTime}}</p>
+                                                    <span class="flight-destination">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.Destination}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% if Stops == "1" %}
+                                    <div class="listing-item listing-flight">
+                                        <div class="flight-booking-time">
+                                            <div class="start-time">
+                                                <div class="start-time-icon">
+                                                    <i class="fal fa-plane-departure"></i>
+                                                </div>
+                                                <div class="start-time-info">
+                                                    <h6 class="start-time-text">Flight Take Off</h6>
+                                                    <p class="flight-full-date">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.DepartureDateTime}}
+                                                    </p>
+                                                    <span class="flight-destination">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.Origin}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="flight-stop">
+                                                <span class="flight-stop-number">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.Stops}} Stop (STN)</span>
+                                                <div class="flight-stop-arrow flight-has-stop"></div>
+                                                <div class="flight-booking-duration">
+                                                    <span class="duration-text">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.JourneyTime}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="end-time">
+                                                <div class="start-time-icon">
+                                                    <i class="fal fa-plane-arrival"></i>
+                                                </div>
+                                                <div class="start-time-info">
+                                                    <h6 class="end-time-text">Flight Landing</h6>
+                                                    <p class="flight-full-date">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.ArrivalDateTime}}</p>
+                                                    <span class="flight-destination">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.Destination}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+
+                                    
+                                    <div class="listing-baggage">
+                                        <div class="listing-baggage-check">
+                                            <div class="row">
+                                                <h4 class="mb-3">Add-ons</h4>
+
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        
+                                                              <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                Add Baggage
+                                            </button>
+                                    
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Baggage</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <select class="select" id="baggagerefno">
+                                                    <option value="">Ref To</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                </select>
+                                                <select class="select" id="baggageid">
+                                                    <option value="">Add Extra Baggage</option>
+                                                    {% for bagg_item in pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Bagg %}
+                                                    <option value="{{ bagg_item.BaggageID }}">{{ bagg_item.Description|slice:"-4:" }} - ₹{{ bagg_item.Amount }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <div id="addedDetails"></div>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Save</button>
+                                            <button type="button" id="addbagg" class="btn btn-primary">Add</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                                        
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                {% comment %} meal {% endcomment %}
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <!-- Button trigger modal -->
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mealModal">
+                                                            Add Meal
+                                                        </button>
+                                     
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="mealModal" tabindex="-1" aria-labelledby="mealModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="mealModalLabel">Meal</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <select class="select" id="mealrefno">
+                                                                            <option value="">Ref To</option>
+                                                                            <option value="1">1</option>
+                                                                            <option value="2">2</option>
+                                                                            <option value="3">3</option>
+                                                                            <option value="4">4</option>
+                                                                            <option value="5">5</option>
+                                                                            <option value="6">6</option>
+                                                                            <option value="7">7</option>
+                                                                            <option value="8">8</option>
+                                                                            <option value="9">9</option>
+                                                                        </select>
+                                                                        <select class="select" name="meal" id="mealid">
+                                                                            <option value="">Add Extra Meal</option>
+                                                                            {% for meal_item in pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Meal %}
+                                                                            <option value="{{ meal_item.MealID }}">{{ meal_item.Description }} - ₹{{ meal_item.Amount }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                        <div id="addedMealDetails"></div>
+                                                                    </div>
+                                                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Save</button>
+                                                                        <button type="button" id="addMeal" class="btn btn-primary">Add</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                    
+                                                </div>
+
+
+
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label>SeatMap</label>
+                                                        <div class="form-group-icon">
+                                                            <select class="select">
+                                                                <option value="">Select Class</option>
+                                                            </select>
+                                                            <i class="far fa-user-tie"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>                                  
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+                                </div>                                
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="booking-sidebar listing-side-content">
+                                    <div class="booking-item">
+                                        <div class="listing-price">
+                                            <div class="listing-price-amount">
+                                                Total:- <span> ₹ {{Total_price}}</span>
+                                            </div>
+                                            <span type="button" data-toggle="modal"
+                                            data-target="#exampleModalLong">
+                                            <span class="#">Fare Rules</span>&nbsp;&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                              </svg>
+                                            </span>
+                                            <div class="listing-side-btn">
+                                            </div>
+
+
+                                            {% comment %} modal {% endcomment %}
+                                             <!-- Modal -->
+                                        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Fare
+                                                        Rules</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+    
+                                                    <pre>{{Fare_Rule|safe}}</pre>
+    
+    
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Close</button>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                            {% comment %} modalend {% endcomment %}
+                                            
+
+                                        </div>
+                                        
+                                        <div class="search-form">
+
+                                            <div class="tour-search-wrapper">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-xl-12">
+
+
+
+
+
+                                                        <table class="table table-borderless">
+                                                            <tr>
+                                                                <th>Passengers</th>
+                                                                <th>Gross Fare</th>
+                                                          
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Adult</td>
+                                                                <td>₹{{adultP}}</td>
+                                                          
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Child</td>
+                                                                <td>₹{{childP}}</td>
+                                                       
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Infant</td>
+                                                                <td>₹{{infantP}}</td>
+                                                              
+                                                            </tr>
+
+                                                        </table>
+
+
+
+
+
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="listing-side-btn">
+                                                    <button type="submit" class="theme-btn">Confirm Booking</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>     
+        {% endif %}   
+
+
+        {% if TripType == "IR" %}
+        <form action="{% url 'IRflight_booking' %}" method="post" onsubmit="return validateForm()">
+            
+            {% csrf_token %}
+            <input type="hidden" id="jsonData" name="jsonData" value="[]">
+            <input type="hidden" id="jsonDataBaggage" name="jsonDataBaggage" value="[]">
+            <input type="hidden" id="jsonDataMeal" name="jsonDataMeal" value="[]">
+            <input type="hidden" name="AdultCount" value="{{AdultCount}}">
+            <input type="hidden" name="ChildCount" value="{{ChildCount}}">
+            <input type="hidden" name="InfantCount" value="{{InfantCount}}">
+            <input type="hidden" name="Token" value="{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Token}}">
+            <input type="hidden" name="TrackId" value="{{pricing_details.PriceItenaryInfo.0.Trackid}}">
+            <input type="hidden" name="flight_details" value='{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights}}'>
+            <input type="hidden" id="TotalAmount" name="TotalAmount" value="{{Total_price}}">
+            <input type="hidden" name="TripType" value="R">
+            <input type="hidden" name="BaseOrigin" value="{{BaseOrigin}}">
+            <input type="hidden" name="BaseDestination" value="{{BaseDestination}}">
+
+            <div class="hotel-single py-120">
+                <div class="container">
+                    <div class="listing-wrapper">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="listing-content">
+
+                                    <div class="listing-item listing-flight">
+                                        <div class="flight-booking-time">
+                                            <div class="start-time">
+                                                <div class="start-time-icon">
+                                                    <i class="fal fa-plane-departure"></i>
+                                                </div>
+                                                <div class="start-time-info">
+                                                    <h6 class="start-time-text">Flight Take Off</h6>
+                                                    <p class="flight-full-date">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.DepartureDateTime}}
+                                                    </p>
+                                                    <span class="flight-destination">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.Origin}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="flight-stop">
+                                                <span class="flight-stop-number">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.Stops}} Stop (STN)</span>
+                                                <div class="flight-stop-arrow flight-has-stop"></div>
+                                                <div class="flight-booking-duration">
+                                                    <span class="duration-text">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.JourneyTime}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="end-time">
+                                                <div class="start-time-icon">
+                                                    <i class="fal fa-plane-arrival"></i>
+                                                </div>
+                                                <div class="start-time-info">
+                                                    <h6 class="end-time-text">Flight Landing</h6>
+                                                    <p class="flight-full-date">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.ArrivalDateTime}}</p>
+                                                    <span class="flight-destination">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.0.Destination}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% if Stops == "1" %}
+                                    <div class="listing-item listing-flight">
+                                        <div class="flight-booking-time">
+                                            <div class="start-time">
+                                                <div class="start-time-icon">
+                                                    <i class="fal fa-plane-departure"></i>
+                                                </div>
+                                                <div class="start-time-info">
+                                                    <h6 class="start-time-text">Flight Take Off</h6>
+                                                    <p class="flight-full-date">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.DepartureDateTime}}
+                                                    </p>
+                                                    <span class="flight-destination">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.Origin}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="flight-stop">
+                                                <span class="flight-stop-number">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.Stops}} Stop (STN)</span>
+                                                <div class="flight-stop-arrow flight-has-stop"></div>
+                                                <div class="flight-booking-duration">
+                                                    <span class="duration-text">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.JourneyTime}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="end-time">
+                                                <div class="start-time-icon">
+                                                    <i class="fal fa-plane-arrival"></i>
+                                                </div>
+                                                <div class="start-time-info">
+                                                    <h6 class="end-time-text">Flight Landing</h6>
+                                                    <p class="flight-full-date">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.ArrivalDateTime}}</p>
+                                                    <span class="flight-destination">{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights.1.Destination}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+
+                                    
+                                    <div class="listing-baggage">
+                                        <div class="listing-baggage-check">
+                                            <div class="row">
+                                                <h4 class="mb-3">Add-ons</h4>
+
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        
+                                                                        <!-- Button trigger modal -->
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                            Add Baggage
+                                                        </button>
+                                                    
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Baggage</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <select class="select" id="baggagerefno">
+                                                                        <option value="">Ref To</option>
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                        <option value="6">6</option>
+                                                                        <option value="7">7</option>
+                                                                        <option value="8">8</option>
+                                                                        <option value="9">9</option>
+                                                                    </select>
+                                                                    <select class="select" id="baggageid">
+                                                                        <option value="">Add Extra Baggage</option>
+                                                                        {% for bagg_item in pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Bagg %}
+                                                                        <option value="{{ bagg_item.BaggageID }}">{{ bagg_item.Description|slice:"-4:" }} - ₹{{ bagg_item.Amount }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                    <div id="addedDetails"></div>
+                                                                </div>
+                                                                <div class="modal-footer justify-content-between">
+                                                                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Save</button>
+                                                                <button type="button" id="addbagg" class="btn btn-primary">Add</button>
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                                            
+                                                    </div>
+                                                </div>
+
+                                                {% comment %} meal {% endcomment %}
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <!-- Button trigger modal -->
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mealModal">
+                                                            Add Meal
+                                                        </button>
+                                     
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="mealModal" tabindex="-1" aria-labelledby="mealModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="mealModalLabel">Meal</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <select class="select" id="mealrefno">
+                                                                            <option value="">Ref To</option>
+                                                                            <option value="1">1</option>
+                                                                            <option value="2">2</option>
+                                                                            <option value="3">3</option>
+                                                                            <option value="4">4</option>
+                                                                            <option value="5">5</option>
+                                                                            <option value="6">6</option>
+                                                                            <option value="7">7</option>
+                                                                            <option value="8">8</option>
+                                                                            <option value="9">9</option>
+                                                                        </select>
+                                                                        <select class="select" name="meal" id="mealid">
+                                                                            <option value="">Add Extra Meal</option>
+                                                                            {% for meal_item in pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Meal %}
+                                                                            <option value="{{ meal_item.MealID }}">{{ meal_item.Description }} - ₹{{ meal_item.Amount }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                        <div id="addedMealDetails"></div>
+                                                                    </div>
+                                                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Save</button>
+                                                                        <button type="button" id="addMeal" class="btn btn-primary">Add</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                    
+                                                </div>
+
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <!-- Button trigger modal -->
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mealModalseat">
+                                                            Add Seat
+                                                        </button>
+                                     
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="mealModalseat" tabindex="-1" aria-labelledby="mealModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="mealModalLabel">Seat</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <select class="select" id="mealrefno">
+                                                                            <option value="">Ref To</option>
+                                                                            <option value="1">1</option>
+                                                                            <option value="2">2</option>
+                                                                            <option value="3">3</option>
+                                                                            <option value="4">4</option>
+                                                                            <option value="5">5</option>
+                                                                            <option value="6">6</option>
+                                                                            <option value="7">7</option>
+                                                                            <option value="8">8</option>
+                                                                            <option value="9">9</option>
+                                                                        </select>
+                                                                        <select class="select" name="meal" id="mealid">
+                                                                            <option value="">Add Extra Meal</option>
+                                                                            {% for meal_item in pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Meal %}
+                                                                            <option value="{{ meal_item.MealID }}">{{ meal_item.Description }} - ₹{{ meal_item.Amount }}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                        <div id="addedMealDetails"></div>
+                                                                    </div>
+                                                                    <div class="modal-footer justify-content-between">
+                                                                        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Save</button>
+                                                                        <button id="addButtonapi" type="button" class="btn btn-primary">Add</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                    
+                                                </div>   
+                                                
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>                                
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="booking-sidebar listing-side-content">
+                                    <div class="booking-item">
+                                        <div class="listing-price">
+                                            <div class="listing-price-amount">
+                                                Total:- <span> ₹ {{Total_price}}</span>
+                                            </div>
+                                            <span type="button" data-toggle="modal"
+                                            data-target="#exampleModalLong">
+                                            <span class="#">Fare Rules</span>&nbsp;&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                              </svg>
+                                            </span>
+                                            <div class="listing-side-btn">
+                                            </div>
+
+
+                                            {% comment %} modal {% endcomment %}
+                                             <!-- Modal -->
+                                        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Fare
+                                                        Rules</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+    
+                                                    <pre>{{Fare_Rule|safe}}</pre>
+    
+    
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Close</button>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                            {% comment %} modalend {% endcomment %}
+                                            
+
+                                        </div>
+                                        
+                                        <div class="search-form">
+
+                                            <div class="tour-search-wrapper">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-xl-12">
+
+
+
+
+
+                                                        <table class="table table-borderless">
+                                                            <tr>
+                                                                <th>Passengers</th>
+                                                                <th>Gross Fare</th>
+                                                          
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Adult</td>
+                                                                <td>₹{{adultP}}</td>
+                                                          
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Child</td>
+                                                                <td>₹{{childP}}</td>
+                                                       
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>Infant</td>
+                                                                <td>₹{{infantP}}</td>
+                                                              
+                                                            </tr>
+
+                                                        </table>
+
+
+
+
+
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="listing-side-btn">
+                                                    <button type="submit" class="theme-btn">Confirm Booking</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>     
+        {% endif %}   
+</main>
+
+
+<main class="main">
+        <form id="myForm">
+            <div class="hotel-single py-0">
+                <div class="container">
+                    <div class="listing-wrapper">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="listing-content">                               
+                                    <div class="listing-baggage">
+                                        <h4 class="mb-3">Pax Details</h4>
+                                        <div class="listing-baggage-check">
+                                           
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Sr.No</label><sup style="color: red;">*</sup>
+                                                                <div class="form-group-icon">
+                                                                    <select class="select" id="srno">                   
+                                                                        <option value="1">1</option>                                                          
+                                                                        <option value="2">2</option>                                                          
+                                                                        <option value="3">3</option>                                                          
+                                                                        <option value="4">4</option>                                                          
+                                                                        <option value="5">5</option>                                                          
+                                                                        <option value="6">6</option>                                                          
+                                                                        <option value="7">7</option>                                                          
+                                                                        <option value="8">8</option>                                                          
+                                                                        <option value="9">9</option>                                                          
+                                                                    </select>                                                            
+                                                                    <i class="far fa-timer"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Title</label><sup style="color: red;">*</sup>
+                                                                <div class="form-group-icon">
+                                                                    <select class="select" id="Title">                   
+                                                                        <option value="Mr">Mr</option>                                                          
+                                                                        <option value="Mrs">Mrs</option>                                                          
+                                                                        <option value="Miss">Miss</option>                                                          
+                                                                        <option value="Ms">Ms</option>                                                          
+                                                                        <option value="Mstr">Mstr</option>                                                          
+                                                                        <option value="Dr">Dr</option>                                                          
+                                                                                                                            
+                                                                    </select>                                                            
+                                                                    <i class="far fa-timer"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Name</label><sup style="color: red;">*</sup>
+                                                                <div class="form-group-icon">
+                                                                    <input type="text" id="FirstName" class="form-control" placeholder="First-Middle"/>
+                                                                    <i class="far fa-user"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>LastName</label><sup style="color: red;">*</sup>
+                                                                <div class="form-group-icon">
+                                                                    <input type="text" id="LastName" class="form-control" placeholder="Last Name"/>
+                                                                    <i class="far fa-user"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>DOB</label>
+                                                                <div class="form-group-icon">
+                                                                    <input type="date" id="DOB" class="form-control"/>
+                                                                    <i class="fab fa-pagelines"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Gender</label>
+                                                                <div class="form-group-icon">
+                                                                    <select id="Gender" class="select">                   
+                                                                        <option value="Male">Male</option>                                                          
+                                                                        <option value="Female">Female</option>                                                          
+                                                                        <option value="Other">Other</option>                                                          
+                                                                                                                    
+                                                                                                                            
+                                                                    </select>                                                            
+                                                                    <i class="far fa-timer"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>PaxType</label><sup style="color: red;">*</sup>
+
+                                                                <div class="form-group-icon">
+                                                                    <select id="PaxType" class="select">                   
+                                                                        <option value="ADT">Adult</option>                                                          
+                                                                        <option value="CHD">Child</option>                                                          
+                                                                        <option value="INF">Infant</option>                                                          
+                                                                                                                    
+                                                                                                                            
+                                                                    </select>                                                            
+                                                                    <i class="far fa-timer"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>PassportNo</label>
+                                                                <div class="form-group-icon">
+                                                                    <input id="PassportNo" type="text" class="form-control" placeholder="if International Flight"/>
+                                                                    <i class="fab fa-pagelines"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>PassportExpiry</label>
+                                                            <div class="form-group-icon">
+                                                                <input id="PassportExpiry" type="date" class="form-control"/>
+                                                                <i class="fab fa-pagelines"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>PassportIssuedDate</label>
+                                                            <div class="form-group-icon">
+                                                                <input id="PassportIssuedDate" type="date" class="form-control"/>
+                                                                <i class="fab fa-pagelines"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>PassportCountryCode</label>
+                                                            <div class="form-group-icon">
+                                                                <input id="PassportCountryCode" type="text" class="form-control"/>
+                                                                <i class="fab fa-pagelines"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>InfantRef</label>
+                                                            <div class="form-group-icon">
+                                                                <input id="InfantRef" type="text" class="form-control" placeholder="if aplicable"/>
+                                                                <i class="fab fa-pagelines"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    </div>
+                                                    <input type="submit" value="Add Passengers">
+                                                                      
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mt-70">
+                                <p id="paxdet"></p>
+                                <a type="button" id="removeButton">X</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>            
+</main>
+
+
+{% block js %}
+
+<script>
+    const form = document.getElementById("myForm");
+    const jsonDataInput = document.getElementById("jsonData");
+    const paxdet = document.getElementById("paxdet");
+    const removeButton = document.getElementById("removeButton");
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const PaxRefNumberSelect = document.getElementById("srno");
+        const TitleSelect = document.getElementById("Title");
+        const GenderSelect = document.getElementById("Gender");
+        const PaxTypeSelect = document.getElementById("PaxType");
+        const PassportCountryCode = document.getElementById("PassportCountryCode").value || "";
+        
+        const PaxRefNumber = PaxRefNumberSelect.options[PaxRefNumberSelect.selectedIndex].value;
+        const Title = TitleSelect.options[TitleSelect.selectedIndex].value;
+        const Gender = GenderSelect.options[GenderSelect.selectedIndex].value;
+        const PaxType = PaxTypeSelect.options[PaxTypeSelect.selectedIndex].value;
+        //const PassportCountryCode = PassportCountryCodeSelect.options[PassportCountryCodeSelect.selectedIndex].value || "";
+        
+        const FirstName = document.getElementById("FirstName").value;
+        const LastName = document.getElementById("LastName").value;
+        const DOBi = document.getElementById("DOB").value;
+        const parts = DOBi.split('-');
+        const DOB = DOBi ? `${parts[2]}/${parts[1]}/${parts[0]}` : "";
+
+        const PassportNo = document.getElementById("PassportNo").value || "";
+        const PassportExpiryi = document.getElementById("PassportExpiry").value || "";
+        const partsE = PassportExpiryi.split('-');
+        const PassportExpiry = PassportExpiryi ? `${partsE[2]}/${partsE[1]}/${partsE[0]}` : "";
+
+        const PassportIssuedDatei = document.getElementById("PassportIssuedDate").value;
+        const partsp = PassportIssuedDatei.split('-');
+        const PassportIssuedDate = PassportIssuedDatei ? `${partsp[2]}/${partsp[1]}/${partsp[0]}` : "";
+        const InfantRef = document.getElementById("InfantRef").value || "";
+        
+        console.log(DOB)
+        // Create a JSON object
+        const newData = {
+            "PaxRefNumber": PaxRefNumber,
+            "Title": Title,
+            "FirstName": FirstName,
+            "LastName": LastName,
+            "DOB": DOB,
+            "Gender": Gender,
+            "PaxType": PaxType,
+            "PassportNo": PassportNo,
+            "PassportExpiry": PassportExpiry,
+            "PassportIssuedDate": PassportIssuedDate,
+           "PassportCountryCode": PassportCountryCode,
+            "InfantRef": InfantRef,
+        };
+
+        // Get the existing JSON data from the hidden input field
+        const existingData = JSON.parse(jsonDataInput.value);
+
+        // Add the new data to the existing JSON data array
+        existingData.push(newData);
+
+        // Update the hidden input field with the updated JSON data
+        jsonDataInput.value = JSON.stringify(existingData);
+
+        // Clear the form fields for the next entry
+   
+        //test
+        const jsonString = jsonDataInput.value;
+        const dataArray = JSON.parse(jsonString);
+        const objectStrings = [];
+
+        for (const obj of dataArray) {
+            const objectString = Object.keys(obj).map(key => `${key}: ${obj[key]}`).join(", ");
+            objectStrings.push(`{${objectString}}`);
+        }
+        const finalString = objectStrings.join(", ");
+        paxdet.textContent = finalString;
+        //testend
+        console.log(paxdet)
+
+
+
+
+
+        form.reset();
+        updatePaxdet();
+    });
+
+    removeButton.addEventListener("click", function() {
+        // Remove the last object from the JSON data
+        const existingData = JSON.parse(jsonDataInput.value);
+        if (existingData.length > 0) {
+            existingData.pop(); // Remove the last object
+        }
+    
+        // Update the hidden input field with the updated JSON data
+        jsonDataInput.value = JSON.stringify(existingData);
+    
+        // Update the <p> tag to display the updated data
+        updatePaxdet();
+    });
+    
+    function updatePaxdet() {
+        const jsonDataInput = document.getElementById("jsonData");
+        const jsonString = jsonDataInput.value;
+        const dataArray = JSON.parse(jsonString);
+        let tableHTML = "<div class='container'><table>";
+            tableHTML += " <tr><th>sr.no</th><th>first name</th><th>last name</th></tr>";
+            tableHTML += "<tbody>";
+
+        for (const obj of dataArray) {
+            const srno = obj.PaxRefNumber || ""; 
+            const firstName = obj.FirstName || ""; 
+            const lastName = obj.LastName || "";
+
+            const rowHTML = `<tr><td>${srno}</td><td>${firstName}</td><td>${lastName}</td></tr>`;
+
+            tableHTML += rowHTML;
+        }
+
+        tableHTML += "</tbody></table></div>";
+
+        paxdet.innerHTML = tableHTML;
+    }
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+
+
+
+
+{% comment %} baggage {% endcomment %}
+<script>
+    // Get references to the select fields, the hidden input, and the display area
+    const baggagerefnoSelect = document.getElementById("baggagerefno");
+    const baggageidSelect = document.getElementById("baggageid");
+    const jsonDataBaggageInput = document.getElementById("jsonDataBaggage");
+    const addedDetailsDisplay = document.getElementById("addedDetails");
+    let TotalAmount = parseFloat(document.getElementById("TotalAmount").value);
+
+    // Get the "Add" button and add a click event handler
+    const addButton = document.getElementById("addbagg");
+    addButton.addEventListener("click", function () {
+        const selectedBaggagerefno = baggagerefnoSelect.value;
+        const selectedBaggageid = baggageidSelect.value;
+        const selectedOption = baggageidSelect.options[baggageidSelect.selectedIndex];
+        const selectedOptionText = selectedOption.text;
+        const parts = selectedOptionText.split(" - ");
+        const price = parseFloat(parts[1].replace('₹', ''));
+
+        TotalAmount += price; // Add the price to the total amount
+        document.getElementById("TotalAmount").value = TotalAmount.toFixed(2);
+
+        let jsonData = JSON.parse(jsonDataBaggageInput.value);
+        const newEntry = { PaxRefNumber: selectedBaggagerefno, BaggageID: selectedBaggageid };
+        jsonData.push(newEntry);
+        jsonDataBaggageInput.value = JSON.stringify(jsonData);
+        baggagerefnoSelect.value = "";
+        baggageidSelect.value = "";
+        displayAddedDetails(price);
+    });
+
+    function displayAddedDetails(price) {
+        const jsonData = JSON.parse(jsonDataBaggageInput.value);
+        addedDetailsDisplay.innerHTML = "";
+
+        for (let i = 0; i < jsonData.length; i++) {
+            const entry = jsonData[i];
+            const removeButton = `<button data-index="${i}" data-price="${price}" class="btn btn-danger remove-button">Remove</button>`;
+            const entryHtml = `Ref To: ${entry.PaxRefNumber}, Baggage ID: ${entry.BaggageID} ${removeButton}<br>`;
+            addedDetailsDisplay.innerHTML += entryHtml;
+        }
+
+        // Add event listeners to the remove buttons
+        const removeButtons = document.querySelectorAll(".remove-button");
+        removeButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const index = button.getAttribute("data-index");
+                const price = parseFloat(button.getAttribute("data-price"));
+                removeEntry(index, price);
+            });
+        });
+    }
+
+    function removeEntry(index, price) {
+        const jsonData = JSON.parse(jsonDataBaggageInput.value);
+        jsonData.splice(index, 1);
+        jsonDataBaggageInput.value = JSON.stringify(jsonData);
+
+        TotalAmount -= price; // Subtract the price from the total amount
+        document.getElementById("TotalAmount").value = TotalAmount.toFixed(2);
+
+        displayAddedDetails(price); // Call the displayAddedDetails with the price to keep it consistent
+    }
+</script>
+
+{% comment %} meals {% endcomment %}
+<script>
+    // Get references to the select fields, the hidden input, and the display area for meals
+    const mealrefnoSelect = document.getElementById("mealrefno");
+    const mealidSelect = document.getElementById("mealid");
+    const jsonDataMealInput = document.getElementById("jsonDataMeal");
+    const addedMealDetailsDisplay = document.getElementById("addedMealDetails");
+    
+
+    // Get the "Add" button for meals and add a click event handler
+    const addMealButton = document.getElementById("addMeal");
+    addMealButton.addEventListener("click", function () {
+        console.log("OK")
+        let TotalAmountmeal = parseFloat(document.getElementById("TotalAmount").value);
+        const selectedMealrefno = mealrefnoSelect.value;
+        const selectedMealid = mealidSelect.value;
+        const selectedMealOption = mealidSelect.options[mealidSelect.selectedIndex];
+        const selectedMealOptionText = selectedMealOption.text;
+        const mealPrice = parseFloat(selectedMealOptionText.split(" - ₹")[1]);
+
+        TotalAmountmeal += mealPrice; // Add the meal price to the total amount
+        document.getElementById("TotalAmount").value = TotalAmountmeal.toFixed(2);
+
+        let jsonDataMeal = JSON.parse(jsonDataMealInput.value);
+        const newMealEntry = { PaxRefNumber: selectedMealrefno, MealID: selectedMealid };
+        jsonDataMeal.push(newMealEntry);
+        jsonDataMealInput.value = JSON.stringify(jsonDataMeal);
+        mealrefnoSelect.value = "";
+        mealidSelect.value = "";
+        displayAddedMealDetails(mealPrice);
+    });
+
+    function displayAddedMealDetails(mealPrice) {
+        const jsonDataMeal = JSON.parse(jsonDataMealInput.value);
+        addedMealDetailsDisplay.innerHTML = "";
+
+        for (let i = 0; i < jsonDataMeal.length; i++) {
+            const mealEntry = jsonDataMeal[i];
+            const removeMealButton = `<button data-index="${i}" data-mealPrice="${mealPrice}" class="btn btn-danger remove-meal-button">Remove</button>`;
+            const mealEntryHtml = `Ref To: ${mealEntry.MealRefNumber}, Meal ID: ${mealEntry.MealID} ${removeMealButton}<br>`;
+            addedMealDetailsDisplay.innerHTML += mealEntryHtml;
+        }
+
+        // Add event listeners to the remove meal buttons
+        const removeMealButtons = document.querySelectorAll(".remove-meal-button");
+        removeMealButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const index = button.getAttribute("data-index");
+                const mealPrice = parseFloat(button.getAttribute("data-mealPrice"));
+                removeMealEntry(index, mealPrice);
+            });
+        });
+    }
+
+    function removeMealEntry(index, mealPrice) {
+        const jsonDataMeal = JSON.parse(jsonDataMealInput.value);
+        jsonDataMeal.splice(index, 1);
+        jsonDataMealInput.value = JSON.stringify(jsonDataMeal);
+
+        TotalAmountmeal -= mealPrice; // Subtract the meal price from the total amount
+        document.getElementById("TotalAmount").value = TotalAmountmeal.toFixed(2);
+
+        displayAddedMealDetails(mealPrice); // Call the displayAddedMealDetails with the meal price to keep it consistent
+    }
+</script>
+
+
+
+
+
+    <!-- rzp_test_cswyVMz6K43yeY -->
+<!-- U9B2rMpbDrs3ObZoDQmfrDKs -->
+<script>
+
+    const payload = {
+        merchant_id: 108226,
+        order_id: Date.now(),
+        currency: "INR",
+        amount: 1000,
+        redirect_url: "http://192.168.1.17:8000/ccavResponseHandler",
+        cancel_url: "http://192.168.1.17:8000/ccavResponseHandler",
+        merchant_param1: "any_value",
+        merchant_param2: "",
+        merchant_param3: "",
+        merchant_param4: "",
+        merchant_param5: "",
+        promo_code: "",
+        customer_identifier: "user123"
+    };
+    const crypto = require('crypto');
+    function node_encrypt_ccavenue_request(payload) {
+        const key = "F21A5F292183BF78483DE0906D5B081E";
+        const method = "aes-256-gcm";
+        const initVector = crypto.randomBytes(16);
+        const cipher = crypto.createCipheriv(method, Buffer.from(key), initVector);
+        let encrypted = cipher.update(payload, 'utf8', 'hex');
+        encrypted += cipher.final('hex');
+        const tag = cipher.getAuthTag().toString('hex');
+        return initVector.toString('hex') + encrypted + tag;
+    }
+
+    function validateForm() {
+        var nameInput = "Mohammed";
+        if (nameInput === 'Mohammed') {
+            showLoader()
+            function showLoader() {
+                document.getElementById("loader-container").style.display = "block";
+            }
+            function hideLoader() {
+                document.getElementById("loader-container").style.display = "none";
+            }
+            window.onload = function() {
+                hideLoader();
+            };
+        return true;
+        } else {
+        alert('Name must be "Mohammed" to submit the form.');
+        return false;
+        }
+    }
+</script>
+    
+
+
+
+{% comment %} api hit {% endcomment %}
+<script>
+    // Function to make the API request
+    function makeApiRequest() {
+        var trip_type = "{{TripType}}"
+        if (trip_type == "IR") {
+            trip_type = "R";
+        }
+      const corsAnywhereUrl = 'https://cors-anywhere.herokuapp.com/';
+      const apiEndpoint = 'http://testrws.mywebcheck.in/TravelAPI.svc/GetAvailSeatMap';
+      const requestBody = {
+        "AgentInfo": {
+            "AgentId": "RABOM0300093",
+            "TerminalId": "RABOM030009301",
+            "UserName": "jbtravel",
+            "AppType": "API",
+            "Version": "V1.0"
+        },
+        SegmentInfo: {
+          BaseOrigin: "{{BaseOrigin}}",
+          BaseDestination: "{{BaseDestination}}",
+          TripType: trip_type,
+        },
+        FlightsInfo: "{{pricing_details.PriceItenaryInfo.0.AvailabilityResponse.0.Flights}}",
+        APIPaxDetails: [
+          {
+            PaxRefNumber: '1',
+            Title: 'MR',
+            FirstName: 'BEN',
+            LastName: 'TEN',
+          }
+        ],
+        TrackId: "{{pricing_details.PriceItenaryInfo.0.Trackid}}",
+      };
+      const headers = new Headers({
+        'Content-Type': 'application/json',
+        Token: 'WHBjS2ZFMUR2OUpwWG1XcXV5d3M5T2ZoWEQ2M28zbVNwYXNSaUt0ZDk1NWlqWURKYWs1TW1NYnkzVVBnYUdpR3F1T3ZKeTVaU1lzMVo5eWs5MGd0WXd4dGNxeVlOb1dPOVNVZ3l1NlJLeXBpTm51UHlSNFVoM1hmSlcva2pKd2YvZDczRVdtd1Q0WE5ZQ29RcFRaMHF6UlpWS2psdDlWUHo1ZmVVVE5PNnp1clRPUXRmWE5BVmE0UDhuT1h3cVllRS9tbkdtOGNpRTN4YVRGOGxma1BsUStBRDBBUFEt',
+      });
+
+      fetch(corsAnywhereUrl + apiEndpoint, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(requestBody),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok', response.json());
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // Handle the response data
+          console.log('Response:', data);
+          // You can store the response data in a variable or perform further actions here
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+
+    // Add a click event listener to the "Add" button
+    document.getElementById('addButtonapi').addEventListener('click', makeApiRequest);
+  </script>
+
+{% endblock %}
+{% endblock %}

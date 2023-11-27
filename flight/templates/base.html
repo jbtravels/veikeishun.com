@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    
+    <!-- meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Mohammed Khan">
+    <meta name="linkedin" href="https://in.linkedin.com/in/mehmedx7">
+    <meta name="author" content="Parvez Khan">
+    <meta name="linkedin" href="https://in.linkedin.com/in/parvezkhan-stockmanager">
+    <meta name="description" content="JB Travel and Tours is a top-rated travel agency that offers personalized travel solutions for all your vacation needs. From flight bookings to hotel reservations, we provide excellent customer service to ensure you have a hassle-free and memorable travel experience. Contact us today to plan your dream getaway!">
+    <meta name="keywords" content="Travel Agency in Mumbai, Goa Tour Packages, Himachal Tour Packages, Bali Tour Packages, Corporate Travel, MICE, Weekend Tours, Cruise Travel">
+
+    <!-- title -->
+    <title>VEIKEISHUN</title>
+
+    {% block head %}
+    {% endblock %}
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/img/logo/201623.png' %}">
+    <!-- css -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/all-fontawesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/magnific-popup.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/nice-select.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/jquery.timepicker.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+    <style>
+        a:hover svg path {
+          fill: #7167FF;
+        }
+            
+      </style>
+</head>
+
+<body>
+
+    <!-- preloader -->
+    <div class="preloader">
+        <div class="loader">
+            <span style="--i:1;"></span>
+            <span style="--i:2;"></span>
+            <span style="--i:3;"></span>
+            <span style="--i:4;"></span>
+            <span style="--i:5;"></span>
+            <span style="--i:6;"></span>
+            <span style="--i:7;"></span>
+            <span style="--i:8;"></span>
+            <span style="--i:9;"></span>
+            <span style="--i:10;"></span>
+            <span style="--i:11;"></span>
+            <span style="--i:12;"></span>
+            <span style="--i:13;"></span>
+            <span style="--i:14;"></span>
+            <span style="--i:15;"></span>
+            <span style="--i:16;"></span>
+            <span style="--i:17;"></span>
+            <span style="--i:18;"></span>
+            <span style="--i:19;"></span>
+            <span style="--i:20;"></span>
+            <div class="loader-plane"></div>
+        </div>
+    </div>
+    <!-- preloader end -->
+
+
+    <!-- header area -->
+    <header class="header">
+
+        <!-- header-top -->
+        <div class="header-top">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-7">
+                        <div class="header-top-left">
+                            <div class="top-social">
+                                <a href="https://www.facebook.com/jbtravelsandtours1/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+
+                                
+                                <a class="twitter-link" href="https://twitter.com/JReservation" target="_blank"><i><svg id="Twitter-new" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="1 1.2 32 32">
+                                    <g id="Layer_2" transform="translate(0.455 1.574)">
+                                      <path id="Path_4734" data-name="Path 4734" d="M17.269,13.217,23.041,6.5h-1.37l-5.016,5.829L12.649,6.5H8.03l6.055,8.814L8.03,22.351H9.4l5.3-6.159,4.232,6.159h4.619l-6.282-9.144h0ZM15.4,15.4l-.614-.879L9.9,7.539h2.107l3.939,5.64.614.879,5.12,7.331H19.574l-4.185-5.98h0Z" fill="#fff"></path>
+                                    </g>
+                                  </svg></i></a>
+
+
+
+                                <a href="https://www.instagram.com/__jbtravelsandtours/" target="_blank"><i class="fab fa-instagram"></i></a>
+                                <a href="https://www.linkedin.com/company/jb-travel-and-tours-pvt-ltd" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                            <div class="top-contact-info">
+                                <ul>
+                                    <li><a href="tel:+918657003259"><i class="far fa-phone-arrow-down-left"></i>+91 86570 03259</a></li>
+                                    <li><a href="mailto:it.support@jbtravels.in"><i
+                                                class="far fa-envelopes"></i>support.veikeishun.com</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="header-top-right">
+                            <div class="lang">
+                                <select name="lang" class="select">
+                                    <option value="1">ENG</option>
+                                    <option value="2">RUS</option>
+                                    <option value="3">ROM</option>
+                                    <option value="4">FRA</option>
+                                    <option value="5">ESP</option>
+                                    <option value="6">POR</option>
+                                </select>
+                            </div>
+                            <div class="currency">
+                                <select name="currency" class="select">
+                                    <option value="INR">INR</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="USD">USD</option>
+                                </select>
+                            </div>
+                            <div class="account">
+                                {% if user.is_authenticated %}
+                                <a href="{% url 'logout' %}"><i class="far fa-sign-in"></i>Logout</a>
+                                {% else %}
+                                <a href="{% url 'login' %}"><i class="far fa-sign-in"></i>Login</a>
+                                {% endif %}
+                                <a href="{% url 'register' %}"><i class="far fa-user-tie"></i>Sign Up</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-navigation">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container">
+                    <a class="navbar-brand" href="{% url 'index' %}">
+                        <img src="{% static 'assets/img/logo/veikeishun.png' %}" class="logo-display" alt="logo">
+                        <img src="{% static 'assets/img/logo/sliderlogofinal.png' %}" class="logo-scrolled" alt="logo">
+                    </a>
+                    <div class="mobile-menu-right">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#main_nav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-btn-icon"><i class="far fa-bars"></i></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse" id="main_nav">
+                        <ul class="navbar-nav">
+                            <div class="maxhide">
+                                {% if user.is_authenticated %}
+                                <li class="nav-item dropdown">
+                                <a class="nav-link" href="{% url 'logout' %}"><i class="far fa-sign-in"></i> Logout</a></li>
+                                {% else %}
+                                <li class="nav-item dropdown">
+                                <a class="nav-link" href="{% url 'login' %}"><i class="far fa-sign-in"></i> Login</a></li>
+                                {% endif %}
+                            </div>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="{% url 'index' %}" >Home</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="#" >Flights</a>
+
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="#" >Hotel</a>
+
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="#" >Holidays</a>
+
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="#" >Cruise</a>
+
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="#">Visa</a>
+
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+                        </ul>
+                        <div class="header-nav-right">
+                            <div class="header-btn">
+                                <a href="https://partner.veikeishun.com" class="theme-btn mt-2">Partner Login</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+    </header>
+    <!-- header area end -->
+
+    {% block body %}
+    
+    {% endblock %}
+
+
+    <!-- footer area -->
+    <footer class="footer-area">
+        <div class="footer-widget">
+            <div class="container">
+                <div class="row footer-widget-wrapper pt-100 pb-70">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="footer-widget-box about-us">
+                            <a href="/" class="footer-logo">
+                                <img src="{% static 'assets/img/logo/veikeishun2.png' %}" alt="">
+                            </a>
+                            <p class="mb-4">
+                            Veikeishun, your one-stop destination for swift and reliable ticket, visa, and forex services.
+                            </p>
+                            <ul class="footer-contact">
+                                <li>
+                                    <div class="footer-call">
+                                        <div class="footer-call-icon">
+                                            <i class="fal fa-headset"></i>
+                                        </div>
+                                        <div class="footer-call-info">
+                                            <h6>24/7 Call Service</h6>
+                                            <a href="tel:+918657003259">+91 8657003259</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><i class="far fa-map-marker-alt"></i>905/Jai Antariksh Andheri, IN</li>
+                                <li><a href="mailto:it.support@jbtravels.in"><i
+                                            class="far fa-envelopes"></i>Support@veikeishun.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-2">
+                        <div class="footer-widget-box list">
+                            <h4 class="footer-widget-title">Our Company</h4>
+                            <ul class="footer-list">
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> About Us</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Meet Our Team</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Contact Us</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Affiliate Program</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Advertising With Us</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Careers</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Our Blog</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-2">
+                        <div class="footer-widget-box list">
+                            <h4 class="footer-widget-title">Other Services</h4>
+                            <ul class="footer-list">
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Rewards Program</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Partners</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Community Program</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Investor Relations</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Developer Guide</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Travel API</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> PointsPLUS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-2">
+                        <div class="footer-widget-box list">
+                            <h4 class="footer-widget-title">Help Center</h4>
+                            <ul class="footer-list">
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Account</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> FAQ's</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Legal Notice</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Privacy Policy</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Terms & Conditions</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Live Chat</a></li>
+                                <li><a href="#"><i class="fas fa-angle-double-right"></i> Sitemap</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="footer-widget-box list">
+                            <h4 class="footer-widget-title">Newsletter</h4>
+                            <div class="footer-newsletter">
+                                <p>Subscribe Our Newsletter To Get Latest Update And News</p>
+                                <div class="subscribe-form">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <div class="form-group-icon">
+                                                <input type="email" class="form-control" placeholder="Your Email">
+                                                <i class="far fa-envelope"></i>
+                                            </div>
+                                        </div>
+                                        <button class="theme-btn" type="submit">
+                                            Subscribe Now <i class="far fa-paper-plane"></i>
+                                        </button>
+                                        <p><i class="far fa-lock"></i> Your information is safe with us.</p>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="footer-payment-method">
+                                <h6>We Accept:</h6>
+                                <div class="payment-method-img">
+                                    <img src="{% static 'assets/img/payment/paypal.svg' %}" alt="">
+                                    <img src="{% static 'assets/img/payment/mastercard.svg' %}" alt="">
+                                    <img src="{% static 'assets/img/payment/visa.svg' %}" alt="">
+                                    <img src="{% static 'assets/img/payment/discover.svg' %}" alt="">
+                                    <img src="{% static 'assets/img/payment/american-express.svg' %}" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 align-self-center">
+                        <p class="copyright-text">
+                            &copy; Copyright <span id="date"></span> <a href="#"> Veikeishun </a> All Rights Reserved.
+                        </p>
+                    </div>
+                    <div class="col-md-6 align-self-center">
+                        <ul class="footer-social">
+                            <li><a href="https://www.facebook.com/jbtravelsandtours1/" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="https://www.linkedin.com/company/jb-travel-and-tours-pvt-ltd" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+                            <li><a href="https://youtube.com/@JBTRAVELS" target="_blank"><i class="fab fa-youtube"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer area end -->
+
+
+
+
+    <!-- scroll-top -->
+    <a href="#" id="scroll-top"><i class="far fa-angle-up"></i></a>
+    <!-- scroll-top end -->
+    <!-- Include Bootstrap JS and SelectPicker JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.14/js/bootstrap-select.min.js"></script>
+
+
+    <!-- js -->
+    <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/modernizr.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/imagesloaded.pkgd.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'assets/js/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.appear.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'assets/js/counter-up.js' %}"></script>
+    <script src="{% static 'assets/js/masonry.pkgd.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.timepicker.min.js' %}"></script>
+    <script src="{% static 'assets/js/wow.min.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+    {% block js %}
+    {% endblock %}
+</body>
+
+</html>
