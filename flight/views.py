@@ -350,8 +350,6 @@ def Rflight_pricing(request):
             pricing_details = Rpricing(BaseOrigin, BaseDestination, TripType, AdultCount, children, infant, Trackid, FlightID, FlightNumber, Origin, Destination, DepartureDateTime, ArrivalDateTime, FlightID1, FlightNumber1, Origin1, Destination1, DepartureDateTime1, ArrivalDateTime1, TotalBaseAmt, OneWay_TotalGrossAmt, Stops, RFlightID, RFlightNumber, ROrigin, RDestination, RDepartureDateTime, RArrivalDateTime, RFlightID1, RFlightNumber1, ROrigin1, RDestination1, RDepartureDateTime1, RArrivalDateTime1, RTotalBaseAmt, ROneWay_TotalGrossAmt, RStops)
             Fare_Rule = Fare_Rules(FlightID, FlightID1, Trackid, Stops)
             Fare_Rule = Fare_Rule['FareRuleInfo']['FareRuleText']
-
-
             #One_way_Total_price
             fare_description = pricing_details['PriceItenaryInfo'][0]['AvailabilityResponse'][0]['Fares'][0]['Faredescription']
 
