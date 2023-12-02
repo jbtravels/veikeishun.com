@@ -4,9 +4,6 @@
 # Ignore pycache files
 __pycache__/
 
-# Ignore SQLite database file
-*.sqlite3
-
 # Ignore environment files
 .env
 
