@@ -22,4 +22,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.SSHKEY }}
-          script: "cd ~/veikeishum.com && ./.scripts/deploy.sh"
+          script: "cd ~/veikeishum.com && .scripts/deploy.sh"
