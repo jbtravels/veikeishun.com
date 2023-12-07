@@ -24,7 +24,7 @@ echo "Serving Static Files..."
 python manage.py collectstatic --noinput
 
 echo "Running Database migration..."
-python manage.py makemigrations
+python manage.py makemigrations flight
 python manage.py migrate
 
 # Deactivate Virtual Env
