@@ -91,14 +91,14 @@ def availabilitycheck(flight_type, DepartureStation, ArrivalStation, FlightDate,
             availabilitycheck_Response = response.json()
 
             # Specify the file name
-            file_name = 'availabilitycheck_response.txt'
+            # file_name = 'availabilitycheck_response.txt'
 
             # Save the payload and response to the text file
-            with open(file_name, 'w') as file:
-                file.write("Request-:\n")
-                file.write(json.dumps(payload, indent=4))
-                file.write("\n\nResponse-:\n")
-                file.write(json.dumps(availabilitycheck_Response, indent=4))
+            # with open(file_name, 'w') as file:
+            #     file.write("Request-:\n")
+            #     file.write(json.dumps(payload, indent=4))
+            #     file.write("\n\nResponse-:\n")
+            #     file.write(json.dumps(availabilitycheck_Response, indent=4))
 
             return availabilitycheck_Response
                   
@@ -167,14 +167,14 @@ def Pricing(BaseOrigin, BaseDestination, TripType, AdultCount, children, infant,
             response_pricing = response.json()
 
             # Specify the file name
-            file_name = 'response_pricing.txt'
+            # file_name = 'response_pricing.txt'
 
-            # Save the payload and response to the text file
-            with open(file_name, 'w') as file:
-                file.write("Request-:\n")
-                file.write(json.dumps(payload, indent=4))
-                file.write("\n\nResponse-:\n")
-                file.write(json.dumps(response_pricing, indent=4))
+            # # Save the payload and response to the text file
+            # with open(file_name, 'w') as file:
+            #     file.write("Request-:\n")
+            #     file.write(json.dumps(payload, indent=4))
+            #     file.write("\n\nResponse-:\n")
+            #     file.write(json.dumps(response_pricing, indent=4))
 
 
 
@@ -306,15 +306,15 @@ def Booking(AdultCount, ChildCount, InfantCount, Token, FlightID, FlightNumber, 
             response = requests.post(endpoint, headers=headers, json=payload)
             response_booking = response.json()
 
-            # Specify the file name
-            file_name = 'response_booking.txt'
+            # # Specify the file name
+            # file_name = 'response_booking.txt'
 
-            # Save the payload and response to the text file
-            with open(file_name, 'w') as file:
-                file.write("Request-:\n")
-                file.write(json.dumps(payload, indent=4))
-                file.write("\n\nResponse-:\n")
-                file.write(json.dumps(response_booking, indent=4))
+            # # Save the payload and response to the text file
+            # with open(file_name, 'w') as file:
+            #     file.write("Request-:\n")
+            #     file.write(json.dumps(payload, indent=4))
+            #     file.write("\n\nResponse-:\n")
+            #     file.write(json.dumps(response_booking, indent=4))
 
             return response_booking
                   
@@ -418,14 +418,14 @@ def Rpricing(BaseOrigin, BaseDestination, TripType, AdultCount, children, infant
 
 
         # Specify the file name
-        file_name = 'Rresponse_pricing.txt'
+        # file_name = 'Rresponse_pricing.txt'
 
-        # Save the payload and response to the text file
-        with open(file_name, 'w') as file:
-            file.write("Request-:\n")
-            file.write(json.dumps(payload, indent=4))
-            file.write("\n\nResponse-:\n")
-            file.write(json.dumps(Rresponse_pricing, indent=4))
+        # # Save the payload and response to the text file
+        # with open(file_name, 'w') as file:
+        #     file.write("Request-:\n")
+        #     file.write(json.dumps(payload, indent=4))
+        #     file.write("\n\nResponse-:\n")
+        #     file.write(json.dumps(Rresponse_pricing, indent=4))
 
         return Rresponse_pricing
                   
@@ -475,14 +475,14 @@ def IRpricing(BaseOrigin, BaseDestination, TripType, AdultCount, ChildCount, Inf
 
 
         # Specify the file name
-        file_name = 'pricingk_response.txt'
+        # file_name = 'pricingk_response.txt'
 
-        # Save the payload and response to the text file
-        with open(file_name, 'w') as file:
-            file.write("Request-:\n")
-            file.write(json.dumps(payload, indent=4))
-            file.write("\n\nResponse-:\n")
-            file.write(json.dumps(IRresponse_pricing, indent=4))
+        # # Save the payload and response to the text file
+        # with open(file_name, 'w') as file:
+        #     file.write("Request-:\n")
+        #     file.write(json.dumps(payload, indent=4))
+        #     file.write("\n\nResponse-:\n")
+        #     file.write(json.dumps(IRresponse_pricing, indent=4))
 
 
 
@@ -617,14 +617,14 @@ def RBooking(AdultCount, ChildCount, InfantCount, Token, FlightID, FlightNumber,
             Rresponse_booking = response.json()
 
             # Specify the file name
-            file_name = 'Rresponse_booking.txt'
+            # file_name = 'Rresponse_booking.txt'
 
-            # Save the payload and response to the text file
-            with open(file_name, 'w') as file:
-                file.write("Request-:\n")
-                file.write(json.dumps(payload, indent=4))
-                file.write("\n\nResponse-:\n")
-                file.write(json.dumps(Rresponse_booking, indent=4))
+            # # Save the payload and response to the text file
+            # with open(file_name, 'w') as file:
+            #     file.write("Request-:\n")
+            #     file.write(json.dumps(payload, indent=4))
+            #     file.write("\n\nResponse-:\n")
+            #     file.write(json.dumps(Rresponse_booking, indent=4))
 
             return Rresponse_booking
                   
@@ -695,14 +695,14 @@ def IRBooking(AdultCount, ChildCount, InfantCount, Token, flight_pricing_details
             Rresponse_booking = response.json()
 
             # Specify the file name
-            file_name = 'Booking_response.txt'
+            # file_name = 'Booking_response.txt'
 
-            # Save the payload and response to the text file
-            with open(file_name, 'w') as file:
-                file.write("Request-:\n")
-                file.write(json.dumps(payload, indent=4))
-                file.write("\n\nResponse-:\n")
-                file.write(json.dumps(Rresponse_booking, indent=4))
+            # # Save the payload and response to the text file
+            # with open(file_name, 'w') as file:
+            #     file.write("Request-:\n")
+            #     file.write(json.dumps(payload, indent=4))
+            #     file.write("\n\nResponse-:\n")
+            #     file.write(json.dumps(Rresponse_booking, indent=4))
 
 
             return Rresponse_booking
